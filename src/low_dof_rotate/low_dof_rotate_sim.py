@@ -15,7 +15,6 @@ import time
 import pydrake
 import numpy as np
 
-import avatar_drake_sim
 
 import pydrake.all
 import pydrake.visualization
@@ -44,78 +43,34 @@ from pydrake.geometry import (
 import pydrake.multibody
 import pydrake.multibody.plant
 
-from avatar_drake_sim.leafs import (
+from leafs import (
     meshcat_keyboard,
     episode_monitor,
-    randomizer_mixin,
     joints_sub_extractor,
     manipulanda,
 )
 
 from pydrake.systems.controllers import (
-    InverseDynamicsController,
     InverseDynamics,
-    PidController
 )
 
-from sensor_msgs.msg import (
-    JointState,
-)
 
-import omegaconf
-from omegaconf import OmegaConf
+from avatar import AvatarLeftFFOnly
 
-from .avatar import AvatarLeftFFOnly
+from low_dof_rotate_reward import LowDOFRotateReward, TargetWrenchReward
 
-from .low_dof_rotate_reward import LowDOFRotateReward, TargetWrenchReward
-
-from avatar_drake_sim.utils import domain_randomizer
+import utils
 
 # suppress avatar urdf warnings
 import logging; logging.getLogger("drake").setLevel(logging.ERROR)
 
-from avatar_drake_sim.sim.sim_base import Simulation
+from sim_base import Simulation
 
 from pydrake.all import EventStatus
 
-
-from avatar_drake_sim.leafs import (
-    randomizer_mixin,
-)
-from avatar_drake_sim.utils import domain_randomizer
-
 import time
 
-class Simulation:
-    def __init__(self):
-        # members
-        self.diagram = None
-        self.simulator = None
-        self.systems = []
-        self.randomizers: list[randomizer_mixin.RandomizerMixin | domain_randomizer.DomainRandomizer] = []
-        
-        # plants
-        self.plant = None
-        self.scene_graph = None
-        self.parser = None
-        self.builder = None
-        
-        # analytics
-        self.last_wall_time = time.time()
-        
-    def register_system(self, system):
-        # if has the randomizermixin
-        if isinstance(system, randomizer_mixin.RandomizerMixin):
-            self.randomizers.append(system)
-            
-        self.systems.append(system)
-        
-    def create_ports(self):
-        pass
-    
-    def add_systems(self):
-        for sys in self.systems:
-            self.builder.AddSystem(sys) # type:ignore
+from low_dof_rotate_state_saver import TwoDOFDatasetSaverLeaf
 
 class NamesAvatarLeftFFOnly:
     def __init__(self) -> None:
@@ -232,10 +187,7 @@ class LowDOFRotateSim(Simulation):
         # Get context
         sim_context = self.simulator.get_mutable_context()
         context = self.plant.GetMyContextFromRoot(sim_context)
-        
-        # sanitize the mass props
-        self.sanitize_mass_properties(context)
-        
+                
         # Reset simulation
         self.plant.SetDefaultContext(context)
         
@@ -245,17 +197,14 @@ class LowDOFRotateSim(Simulation):
         # reset time
         sim_context.SetTime(0)
         self.simulator.Initialize()
+        
+        # reset the state saver
+        self.state_saver.reset()
     
         
     def add_objects(self):
-        # get the root directory so this code can be ran from anywhere
-        from pathlib import Path
-        module_dir = Path(avatar_drake_sim.__file__).parent
-        
-        root = str(module_dir) + "/../.."
-                
         # full path to urdf
-        path = root + "/urdf/rotating_puck.sdf" #type:ignore
+        path = "/urdf/rotating_puck.sdf" #type:ignore
         
         self.manipulanda_model_instance = self.parser.AddModels(path)[0] #type:ignore
         
@@ -393,35 +342,6 @@ class LowDOFRotateSim(Simulation):
         ######## REQUIRED FOR RANDOMIZATION ########
         self.register_system(self.reward_wrench_leaf)
         
-    def add_ros2_leafs(self):
-        if self.must_connect_ros2:
-            # load ros interface config
-            ros_interface_cfg0 = OmegaConf.load("config/ros_interface.yaml")
-            assert(isinstance(ros_interface_cfg0, omegaconf.DictConfig))
-            
-            ros_interface_cfg = ros_interface_cfg0["ros_interface"]
-            
-            sub_cfg_joint_commands = ros_interface_cfg["subscribers"]["joint_commands"]
-            
-            ## ROS2 stuff
-            drake_ros.core.init()
-            
-            # ROS Interface System
-            self.sys_ros_interface = self.builder.AddSystem(
-                RosInterfaceSystem(ros_interface_cfg["node_name"])
-            )
-            
-            # joint cmd subscriber
-            sub_qos = utils.parse_qos_dict(sub_cfg_joint_commands["qos"])
-            self.sub_joint_cmds = self.builder.AddSystem(
-                RosSubscriberSystem.Make(
-                    JointState,
-                    sub_cfg_joint_commands["topic"],
-                    sub_qos,
-                    self.sys_ros_interface.get_ros_interface() #type:ignore
-                )
-            )
-            self.sub_joint_cmds.set_name("sub_joint_commands")
         
     def add_leafs(self):
         """
@@ -450,6 +370,17 @@ class LowDOFRotateSim(Simulation):
         # for now just use one body
         index = self.plant.GetBodyIndices(self.manipulanda_model_instance)[0]
         
+        # state saver        
+        self.state_saver = TwoDOFDatasetSaverLeaf(
+                self.plant, 
+                self.avatar,
+                index,
+                manipulanda_body_index = index,
+                file_path = "data/two_dof_rotate_sim.zarr",
+                data_period = self.data_sampling_period, # / 3.0, # nominal is 10hz, but the sim takes 3x real time, so divide by 3?
+            )
+        
+        self.builder.AddSystem(self.state_saver)
         self.builder.AddSystem(self.manipulanda_leaf)
         self.builder.AddSystem(self.joint_sub_extractor_leaf)
         self.builder.AddSystem(self.puck_joint_leaf)
@@ -457,12 +388,10 @@ class LowDOFRotateSim(Simulation):
         self.builder.AddSystem(self.reward_leaf)
         self.builder.AddSystem(self.reward_wrench_leaf)
         
-        # ros2
-        self.add_ros2_leafs()
         
     def num_actions(self):
         # hard coded for now...
-        return 22
+        return 3
 
     def wire_leafs(self):
         """
@@ -495,6 +424,7 @@ class LowDOFRotateSim(Simulation):
             self.ep_save_trigger.get_input_port()
         )
         
+        
         ### state saver
         self.state_saver.wire_upstream(self.builder, self.reward_leaf.GetOutputPort("reward"), self.reward_wrench_leaf.GetOutputPort("target_wrench"), self.reward_wrench_leaf.GetOutputPort("current_wrench"))
         
@@ -512,10 +442,6 @@ class LowDOFRotateSim(Simulation):
         # reward leaf
         self.reward_leaf.wire_upstream(self.builder, self.reward_delay.get_output_port(), self.puck_joint_leaf.GetOutputPort("joint_value"))
         self.reward_wrench_leaf.wire_upstream(self.builder)
-        
-        ### ros stuff
-        if self.must_connect_ros2:
-            self.joint_sub_extractor_leaf.wire_upstream(self.builder, self.sub_joint_cmds.get_output_port())
         
     def randomize(self):
         for randomizer in self.randomizers:

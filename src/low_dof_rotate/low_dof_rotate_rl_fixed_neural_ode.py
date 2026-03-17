@@ -34,12 +34,12 @@ from stable_baselines3.common.type_aliases import PyTorchObs, Schedule
 
 import pydrake.all
 
-from avatar_drake_sim.sims.low_dof_rotate.low_dof_rotate_sim import LowDOFRotateSim
+from low_dof_rotate_sim import LowDOFRotateSim
 
 
 # Assuming your environment setup is in a file named low_dof_env_factory.py
 # or defined earlier in your script
-from avatar_drake_sim.sims.low_dof_rotate.low_dof_gym_env import LowDOFRotateGymEnv
+from low_dof_gym_env import LowDOFRotateGymEnv
 
 import gymnasium as gym
 
@@ -53,7 +53,7 @@ import numpy as np
 import torch as th
 
 
-from avatar_drake_sim.sims.sandbox.classes.simple_scheduling import (
+from simple_scheduling import (
     SimpleLinearScheduler,
 )
 

@@ -14,7 +14,18 @@
 
 ## Prerequisites
 ```
+pip install omegaconf
+```
+
+
+pydrake:
+```
 pip install drake
+```
+
+drake-gym:
+```
+
 ```
 
 ## How To Run

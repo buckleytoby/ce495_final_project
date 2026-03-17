@@ -6,7 +6,7 @@ from stable_baselines3.common.vec_env import DummyVecEnv
 
 # Assuming your environment setup is in a file named low_dof_env_factory.py
 # or defined earlier in your script
-from .low_dof_gym_env import LowDOFRotateGymEnv
+from low_dof_gym_env import LowDOFRotateGymEnv
 
 import matplotlib.pyplot as plt
 from stable_baselines3.common.callbacks import BaseCallback

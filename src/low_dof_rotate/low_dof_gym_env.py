@@ -6,7 +6,7 @@ from stable_baselines3.common.monitor import Monitor
 import os
 
 
-from .low_dof_rotate_sim import LowDOFRotateSim
+from low_dof_rotate_sim import LowDOFRotateSim
 
 # NOT using our custom DrakeGymEnv
 from drake_gym.drake_gym import DrakeGymEnv
@@ -15,7 +15,7 @@ import gymnasium as gym
 import numpy as np
 
 # import action obs
-from .low_dof_gym_env_leafs import LowDOFRotateAction, LowDOFRotateObservation
+from low_dof_gym_env_leafs import LowDOFRotateAction, LowDOFRotateObservation
 
 from pydrake.all import EventStatus
 
@@ -123,7 +123,7 @@ class LowDofRL:
         
     def rl_sim_monitor(self, root_context):
         """
-        specialized sim monitor for RL. This one doesn't reset and doesn't save data to the RB, because those are both handled in either drake-gym or the RL pipeline (diffusion_policy...)
+        specialized sim monitor for RL. This one doesn't reset and doesn't save data to the RB, because those are both handled in either drake-gym or the RL pipeline
         """
         # normal status
         event_status = EventStatus.Succeeded()
@@ -231,7 +231,7 @@ def LowDOFRotateGymEnv():
         
         return env
         
-    if True:
+    if False:
         env = make_vec_env(make_drake_env, n_envs=24, vec_env_cls=SubprocVecEnv)
     else:
         env = make_vec_env(make_drake_env, n_envs=1, vec_env_cls=DummyVecEnv)
