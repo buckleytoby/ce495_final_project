@@ -8,7 +8,6 @@ from typing import List, Dict, Tuple, Optional
 from pydrake.all import ModelInstanceIndex
 from pydrake.multibody.tree import JointIndex, BodyIndex, FrameIndex
 from pydrake.multibody.plant import MultibodyPlant, CoulombFriction
-from rclpy.qos import QoSProfile, HistoryPolicy, ReliabilityPolicy
 from pydrake.math import RigidTransform, RollPitchYaw
 from pydrake.geometry import AddCompliantHydroelasticProperties, AddRigidHydroelasticProperties
 from pydrake.multibody.plant import ContactModel, DiscreteContactApproximation
