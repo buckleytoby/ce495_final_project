@@ -234,6 +234,7 @@ dependencies:
       - drake==1.51.1
       - mosek==11.1.2
       - pydot==4.0.1
+      - setuptools==81.0.0
 variables:
   PYTHONNOUSERSITE: '1'
 prefix: /home/omnid/miniforge3/envs/ce495

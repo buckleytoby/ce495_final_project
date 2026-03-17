@@ -54,7 +54,7 @@ to watch the drake simulation
 
 If you want to view tensorboard, navigate to the puck logs
 ```
-cd puck_logs/
+cd src/low_dof_rotate/puck_logs/
 ```
 run
 ```
