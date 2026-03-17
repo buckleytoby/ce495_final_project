@@ -8,8 +8,7 @@ import os
 
 from low_dof_rotate_sim import LowDOFRotateSim
 
-# NOT using our custom DrakeGymEnv
-from drake_gym.drake_gym import DrakeGymEnv
+from drake_gym import DrakeGymEnv
 
 import gymnasium as gym
 import numpy as np

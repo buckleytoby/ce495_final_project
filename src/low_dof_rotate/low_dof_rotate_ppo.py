@@ -8,12 +8,10 @@ from stable_baselines3.common.vec_env import DummyVecEnv
 # or defined earlier in your script
 from low_dof_gym_env import LowDOFRotateGymEnv
 
-import matplotlib.pyplot as plt
 from stable_baselines3.common.callbacks import BaseCallback
 
 import numpy as np
 
-import matplotlib.pyplot as plt
 from stable_baselines3.common.callbacks import BaseCallback
 import numpy as np
         

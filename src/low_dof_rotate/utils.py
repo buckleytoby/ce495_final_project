@@ -4,7 +4,6 @@ import yaml
 import numpy as np
 import csv
 import os
-import pydot
 from typing import List, Dict, Tuple, Optional
 from pydrake.all import ModelInstanceIndex
 from pydrake.multibody.tree import JointIndex, BodyIndex, FrameIndex
