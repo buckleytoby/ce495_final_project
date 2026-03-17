@@ -1,6 +1,6 @@
 import os
 import gymnasium as gym
-from stable_baselines3 import PPO
+from stable_baselines3 import SAC
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.vec_env import DummyVecEnv
 
@@ -56,17 +56,22 @@ def main():
     # 3. Initialize the PPO Agent
     # We use MlpPolicy because the state is likely a small vector
     # (joint position, velocity, and maybe contact wrenches).
+    
+    net_arch = dict(pi=[0], qf=[48, 48])
         
-    model = PPO(
+    model = SAC(
         policy="MlpPolicy",
         env=env,
+        learning_starts = 50, # must be at least 2
+        buffer_size = 2048,
         learning_rate=3e-4,
-        n_steps=50,      # Experience collected before an update
         batch_size=64,     # Size of SGD minibatches
-        n_epochs=10,       # Optimization epochs per update
         gamma=0.99,        # Discount factor
         verbose=1,
-        tensorboard_log=log_dir,
+        tensorboard_log = log_dir,
+        policy_kwargs = dict(
+            net_arch=net_arch,
+        ),
     )
     
     # print the nb of parameters
