@@ -1,0 +1,264 @@
+controller_gains:
+  pid_with_id:
+    # ---------------------
+    # gofa1 joints (6 total)
+    # ---------------------
+    gofa1_joint_1: {kp: 200.0, kd: 8.0}
+    gofa1_joint_2: {kp: 250.0, kd: 25.0}
+    gofa1_joint_3: {kp: 180.0, kd: 20.0}
+    gofa1_joint_4: {kp: 200.0, kd: 10.0}
+    gofa1_joint_5: {kp: 200.0, kd: 10.0}
+    gofa1_joint_6: {kp: 160.0, kd: 8.0}
+
+    # -------------------------------------------------
+    # Left hand (LH) joints (24 total)
+    # -------------------------------------------------
+    lh_WRJ2:  {kp: 60.0, kd: 7.0}
+    lh_WRJ1:  {kp: 60.0, kd: 7.0}
+    lh_FFJ4:  {kp: 60.0, kd: 7.0}
+    lh_FFJ3:  {kp: 60.0, kd: 7.0}
+    lh_FFJ2:  {kp: 60.0, kd: 7.0}
+    lh_FFJ1:  {kp: 60.0, kd: 7.0}
+    lh_MFJ4:  {kp: 60.0, kd: 7.0}
+    lh_MFJ3:  {kp: 60.0, kd: 7.0}
+    lh_MFJ2:  {kp: 60.0, kd: 7.0}
+    lh_MFJ1:  {kp: 60.0, kd: 7.0}
+    lh_RFJ4:  {kp: 60.0, kd: 7.0}
+    lh_RFJ3:  {kp: 60.0, kd: 7.0}
+    lh_RFJ2:  {kp: 60.0, kd: 7.0}
+    lh_RFJ1:  {kp: 60.0, kd: 7.0}
+    lh_LFJ5:  {kp: 20.0, kd: 4.0}
+    lh_LFJ4:  {kp: 60.0, kd: 7.0}
+    lh_LFJ3:  {kp: 60.0, kd: 7.0}
+    lh_LFJ2:  {kp: 60.0, kd: 7.0}
+    lh_LFJ1:  {kp: 60.0, kd: 7.0}
+    lh_THJ5:  {kp: 60.0, kd: 7.0}
+    lh_THJ4:  {kp: 60.0, kd: 7.0}
+    lh_THJ3:  {kp: 60.0, kd: 7.0}
+    lh_THJ2:  {kp: 60.0, kd: 7.0}
+    lh_THJ1:  {kp: 60.0, kd: 7.0}
+
+    # ----------------------
+    # gofa2 joints (6 total) 
+    # same as gofa1
+    # ----------------------
+    gofa2_joint_1: {kp: 4.3, ki: 0.0, kd: 8.0}
+    gofa2_joint_2: {kp: 4.0, ki: 0.0, kd: 8.0}
+    gofa2_joint_3: {kp: 4.0, ki: 0.0, kd: 8.0}
+    gofa2_joint_4: {kp: 1.5, ki: 0.0, kd: 10.0}
+    gofa2_joint_5: {kp: 4.0, ki: 0.0, kd: 8.0}
+    gofa2_joint_6: {kp: 0.8, ki: 0.0, kd: 8.0}
+
+    # ------------------------------------------------
+    # Right hand (RH) joints (24 total), same as LH
+    # ------------------------------------------------
+    rh_WRJ2:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_WRJ1:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_FFJ4:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_FFJ3:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_FFJ2:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_FFJ1:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_MFJ4:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_MFJ3:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_MFJ2:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_MFJ1:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_RFJ4:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_RFJ3:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_RFJ2:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_RFJ1:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_LFJ5:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_LFJ4:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_LFJ3:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_LFJ2:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_LFJ1:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_THJ5:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_THJ4:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_THJ3:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_THJ2:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_THJ1:  {kp: 6.0, ki: 0.0, kd: 7.0}
+
+    # ------------------------------------------------
+    # xarm6 joints (6 total)
+    # ------------------------------------------------
+    xarm6_joint1: {kp: 6.0, ki: 0.0, kd: 7.0}
+    xarm6_joint2: {kp: 6.0, ki: 0.0, kd: 7.0}
+    xarm6_joint3: {kp: 6.0, ki: 0.0, kd: 7.0}
+    xarm6_joint4: {kp: 6.0, ki: 0.0, kd: 7.0}
+    xarm6_joint5: {kp: 6.0, ki: 0.0, kd: 7.0}
+    xarm6_joint6: {kp: 6.0, ki: 0.0, kd: 7.0}
+
+  idc:
+    # ---------------------
+    # gofa1 joints (6 total)
+    # ---------------------
+    gofa1_joint_1: {kp: 4.3, ki: 0.0, kd: 8.0}
+    gofa1_joint_2: {kp: 4.0, ki: 0.0, kd: 8.0}
+    gofa1_joint_3: {kp: 4.0, ki: 0.0, kd: 8.0}
+    gofa1_joint_4: {kp: 1.5, ki: 0.0, kd: 10.0}
+    gofa1_joint_5: {kp: 4.0, ki: 0.0, kd: 8.0}
+    gofa1_joint_6: {kp: 0.8, ki: 0.0, kd: 8.0}
+
+    # -------------------------------------------------
+    # Left hand (LH) joints (24 total)
+    # -------------------------------------------------
+    lh_WRJ2:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_WRJ1:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_FFJ4:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_FFJ3:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_FFJ2:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_FFJ1:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_MFJ4:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_MFJ3:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_MFJ2:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_MFJ1:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_RFJ4:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_RFJ3:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_RFJ2:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_RFJ1:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_LFJ5:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_LFJ4:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_LFJ3:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_LFJ2:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_LFJ1:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_THJ5:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_THJ4:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_THJ3:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_THJ2:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    lh_THJ1:  {kp: 6.0, ki: 0.0, kd: 7.0}
+
+    # ----------------------
+    # gofa2 joints (6 total) 
+    # same as gofa1
+    # ----------------------
+    gofa2_joint_1: {kp: 4.3, ki: 0.0, kd: 8.0}
+    gofa2_joint_2: {kp: 4.0, ki: 0.0, kd: 8.0}
+    gofa2_joint_3: {kp: 4.0, ki: 0.0, kd: 8.0}
+    gofa2_joint_4: {kp: 1.5, ki: 0.0, kd: 10.0}
+    gofa2_joint_5: {kp: 4.0, ki: 0.0, kd: 8.0}
+    gofa2_joint_6: {kp: 0.8, ki: 0.0, kd: 8.0}
+
+    # ------------------------------------------------
+    # Right hand (RH) joints (24 total), same as LH
+    # ------------------------------------------------
+    rh_WRJ2:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_WRJ1:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_FFJ4:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_FFJ3:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_FFJ2:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_FFJ1:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_MFJ4:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_MFJ3:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_MFJ2:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_MFJ1:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_RFJ4:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_RFJ3:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_RFJ2:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_RFJ1:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_LFJ5:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_LFJ4:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_LFJ3:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_LFJ2:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_LFJ1:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_THJ5:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_THJ4:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_THJ3:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_THJ2:  {kp: 6.0, ki: 0.0, kd: 7.0}
+    rh_THJ1:  {kp: 6.0, ki: 0.0, kd: 7.0}
+
+    # ------------------------------------------------
+    # xarm6 joints (6 total)
+    # ------------------------------------------------
+    xarm6_joint1: {kp: 6.0, kd: 7.0}
+    xarm6_joint2: {kp: 6.0, kd: 7.0}
+    xarm6_joint3: {kp: 6.0, kd: 7.0}
+    xarm6_joint4: {kp: 6.0, kd: 7.0}
+    xarm6_joint5: {kp: 6.0, kd: 7.0}
+    xarm6_joint6: {kp: 6.0, kd: 7.0}
+
+  implicit_pd:
+    # ---------------------
+    # gofa1 actuators (6 total)
+    # ---------------------
+    gofa1_J1: {kp: 200.0, kd: 8.0}
+    gofa1_J2: {kp: 250.0, kd: 25.0}
+    gofa1_J3: {kp: 180.0, kd: 20.0}
+    gofa1_J4: {kp: 200.0, kd: 10.0}
+    gofa1_J5: {kp: 200.0, kd: 10.0}
+    gofa1_J6: {kp: 160.0, kd: 8.0}
+
+    # -------------------------------------------------
+    # Left hand (LH) actuators (24 total)
+    # -------------------------------------------------
+    lh_WRJ2:  {kp: 500.0, kd: 50.0}
+    lh_WRJ1:  {kp: 500.0, kd: 50.0}
+    lh_FFJ4:  {kp: 500.0, kd: 50.0}
+    lh_FFJ3:  {kp: 500.0, kd: 50.0}
+    lh_FFJ2:  {kp: 500.0, kd: 50.0}
+    lh_FFJ1:  {kp: 500.0, kd: 50.0}
+    lh_MFJ4:  {kp: 500.0, kd: 50.0}
+    lh_MFJ3:  {kp: 500.0, kd: 50.0}
+    lh_MFJ2:  {kp: 500.0, kd: 50.0}
+    lh_MFJ1:  {kp: 500.0, kd: 50.0}
+    lh_RFJ4:  {kp: 500.0, kd: 50.0}
+    lh_RFJ3:  {kp: 500.0, kd: 50.0}
+    lh_RFJ2:  {kp: 500.0, kd: 50.0}
+    lh_RFJ1:  {kp: 500.0, kd: 50.0}
+    lh_LFJ5:  {kp: 500.0, kd: 50.0}
+    lh_LFJ4:  {kp: 500.0, kd: 50.0}
+    lh_LFJ3:  {kp: 500.0, kd: 50.0}
+    lh_LFJ2:  {kp: 500.0, kd: 50.0}
+    lh_LFJ1:  {kp: 500.0, kd: 50.0}
+    lh_THJ5:  {kp: 500.0, kd: 50.0}
+    lh_THJ4:  {kp: 500.0, kd: 50.0}
+    lh_THJ3:  {kp: 500.0, kd: 50.0}
+    lh_THJ2:  {kp: 500.0, kd: 50.0}
+    lh_THJ1:  {kp: 500.0, kd: 50.0}
+
+    # ----------------------
+    # gofa2 acutators (6 total) 
+    # Gains same as gofa1
+    # ----------------------
+    gofa2_J1: {kp: 200.0, kd: 8.0}
+    gofa2_J2: {kp: 250.0, kd: 25.0}
+    gofa2_J3: {kp: 180.0, kd: 20.0}
+    gofa2_J4: {kp: 200.0, kd: 10.0}
+    gofa2_J5: {kp: 200.0, kd: 10.0}
+    gofa2_J6: {kp: 160.0, kd: 8.0}
+
+    # ------------------------------------------------
+    # Right hand (RH) actuators (24 total), same as LH
+    # ------------------------------------------------
+    rh_WRJ2:  {kp: 60.0, kd: 7.0}
+    rh_WRJ1:  {kp: 60.0, kd: 7.0}
+    rh_FFJ4:  {kp: 60.0, kd: 7.0}
+    rh_FFJ3:  {kp: 60.0, kd: 7.0}
+    rh_FFJ2:  {kp: 60.0, kd: 7.0}
+    rh_FFJ1:  {kp: 60.0, kd: 7.0}
+    rh_MFJ4:  {kp: 60.0, kd: 7.0}
+    rh_MFJ3:  {kp: 60.0, kd: 7.0}
+    rh_MFJ2:  {kp: 60.0, kd: 7.0}
+    rh_MFJ1:  {kp: 60.0, kd: 7.0}
+    rh_RFJ4:  {kp: 60.0, kd: 7.0}
+    rh_RFJ3:  {kp: 60.0, kd: 7.0}
+    rh_RFJ2:  {kp: 60.0, kd: 7.0}
+    rh_RFJ1:  {kp: 60.0, kd: 7.0}
+    rh_LFJ5:  {kp: 20.0, kd: 4.0}
+    rh_LFJ4:  {kp: 60.0, kd: 7.0}
+    rh_LFJ3:  {kp: 60.0, kd: 7.0}
+    rh_LFJ2:  {kp: 60.0, kd: 7.0}
+    rh_LFJ1:  {kp: 60.0, kd: 7.0}
+    rh_THJ5:  {kp: 60.0, kd: 7.0}
+    rh_THJ4:  {kp: 60.0, kd: 7.0}
+    rh_THJ3:  {kp: 60.0, kd: 7.0}
+    rh_THJ2:  {kp: 60.0, kd: 7.0}
+    rh_THJ1:  {kp: 60.0, kd: 7.0}
+
+    # ------------------------------------------------
+    # xarm6 actuators (6 total)
+    # ------------------------------------------------
+    xarm6_motor1: {kp: 6.0, kd: 7.0}
+    xarm6_motor2: {kp: 6.0, kd: 7.0}
+    xarm6_motor3: {kp: 6.0, kd: 7.0}
+    xarm6_motor4: {kp: 6.0, kd: 7.0}
+    xarm6_motor5: {kp: 6.0, kd: 7.0}
+    xarm6_motor6: {kp: 6.0, kd: 7.0}

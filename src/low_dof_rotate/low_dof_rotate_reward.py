@@ -4,15 +4,14 @@ drake leaf system which takes as input the object pose and the target pose and c
 from pydrake.math import RigidTransform
 import numpy as np
 from typing import Dict
-from avatar_drake_sim.utils.avatar import Avatar
-from avatar_drake_sim.utils import utils
+from avatar import Avatar
+import utils
 from pydrake.all import MultibodyPlant
 from pydrake.all import RigidTransform
 from pydrake.all import LeafSystem, BasicVector, AbstractValue
-from sensor_msgs.msg import JointState # ROS 2 message
 
 # randomizer mixin
-from avatar_drake_sim.leafs.randomizer_mixin import RandomizerMixin
+from leafs.randomizer_mixin import RandomizerMixin
 
 from pydrake.all import (
     SpatialForce,

@@ -34,12 +34,12 @@ from stable_baselines3.common.type_aliases import PyTorchObs, Schedule
 
 import pydrake.all
 
-from avatar_drake_sim.sims.low_dof_rotate.low_dof_rotate_sim import LowDOFRotateSim
+from low_dof_rotate_sim import LowDOFRotateSim
 
 
 # Assuming your environment setup is in a file named low_dof_env_factory.py
 # or defined earlier in your script
-from avatar_drake_sim.sims.low_dof_rotate.low_dof_gym_env import LowDOFRotateGymEnv
+from low_dof_gym_env import LowDOFRotateGymEnv
 
 import gymnasium as gym
 
@@ -53,7 +53,7 @@ import numpy as np
 import torch as th
 
 
-from avatar_drake_sim.sims.sandbox.classes.simple_scheduling import (
+from simple_scheduling import (
     SimpleLinearScheduler,
 )
 
@@ -173,6 +173,10 @@ class ActorlessCriticPolicy(SACPolicy):
 
     def inference(self, obs: PyTorchObs, deterministic: bool = False) -> th.Tensor:
         return self._predict_lbfgs(obs, deterministic=deterministic)
+    
+    # override to not use the actor
+    def _predict(self, observation: PyTorchObs, deterministic: bool = False) -> th.Tensor:
+        return self._predict_lbfgs(observation, deterministic=deterministic)
 
     def _predict_lbfgs(self, observation: PyTorchObs, deterministic: bool = False) -> th.Tensor: 
         """
@@ -431,6 +435,29 @@ class ActorlessCriticAlgorithm(SAC):
         assert(action.shape[1] == NUM_ACTIONS) # action dim
         
         return action, state
+    
+    
+from stable_baselines3.common.callbacks import BaseCallback
+import time
+
+class InferenceTimeCallback(BaseCallback):
+    def __init__(self, verbose=0):
+        super().__init__(verbose)
+        self.inference_times = []
+
+    def _on_step(self) -> bool:
+        # We access the most recent observation from the environment
+        obs = self.locals["new_obs"]
+        
+        # Measure only the prediction/inference part
+        start_time = time.perf_counter()
+        with th.no_grad():
+            self.model.policy.predict(obs, deterministic=True)
+        end_time = time.perf_counter()
+        
+        inf_time_ms = (end_time - start_time) * 1000
+        self.logger.record("time/inference_time_ms", inf_time_ms)
+        return True
 
 def main():
     # 1. Create the environment
@@ -451,6 +478,8 @@ def main():
     
     log_dir = "./puck_logs/"
     
+    net_arch = dict(pi=[0], qf=[48, 48])
+    
     model = ActorlessCriticAlgorithm(
         policy = ActorlessCriticPolicy,
         env=env,
@@ -462,12 +491,27 @@ def main():
         verbose=1,
         replay_buffer_class = ReplayBufferWithNextAction,
         tensorboard_log = log_dir,
+        policy_kwargs = dict(
+            net_arch=net_arch,
+        ),
+        
     )
+    
+    PROFILING = False
+    if PROFILING:
+        cb = InferenceTimeCallback()
+    else:
+        cb = None
+    
+    
+    # print the nb of parameters
+    nb_elements = sum(p.numel() for p in model.policy.parameters())
+    print(f"Number of parameters: {nb_elements}")
 
     # 4. Train the agent
-    total_timesteps = 500_000
+    total_timesteps = 200_000
     print(f"Starting training for {total_timesteps} steps...")
-    model.learn(total_timesteps=total_timesteps, progress_bar=True, log_interval=24)
+    model.learn(total_timesteps=total_timesteps, progress_bar=True, log_interval=24, callback=cb)
 
 
 if __name__ == "__main__":

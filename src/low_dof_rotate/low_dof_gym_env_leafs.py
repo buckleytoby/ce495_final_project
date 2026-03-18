@@ -8,10 +8,10 @@ from pydrake.systems.framework import LeafSystem, BasicVector
 from pydrake.all import RigidTransform, AbstractValue
 import numpy as np
 
-from sensor_msgs.msg import JointState
 
 from typing import Dict
 
+from utils import JointState
 
 class NamesAvatarLeftFFOnly:
     def __init__(self) -> None:

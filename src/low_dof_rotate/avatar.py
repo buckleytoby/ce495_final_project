@@ -13,12 +13,11 @@ import pydrake
 import pydrake.all
 import pydrake.math
 
-import avatar_drake_sim
 
-from avatar_drake_sim.utils.domain_randomizer import AvatarRandomizer, TableRandomizer
+from domain_randomizer import AvatarRandomizer, TableRandomizer
 
 # import randomizer_mixin
-from avatar_drake_sim.leafs.randomizer_mixin import RandomizerMixin
+from leafs.randomizer_mixin import RandomizerMixin
 
 class AddModels:
     def __init__(self,
@@ -36,12 +35,6 @@ class AddModelsAvatar(AddModels):
         
 class AddModelsAvatarLeftHand(AddModels):
     def add_models(self):
-        # get the root directory so this code can be ran from anywhere
-        from pathlib import Path
-        module_dir = Path(avatar_drake_sim.__file__).parent
-        
-        root = str(module_dir) + "/../.."
-                
         # full path to urdf
         avatar_path = root + "/urdf/avatar_left_hand.urdf" #type:ignore
         
@@ -52,14 +45,8 @@ class AddModelsAvatarLeftHand(AddModels):
         
 class AddModelsAvatarLeftFFOnly(AddModels):
     def add_models(self):
-        # get the root directory so this code can be ran from anywhere
-        from pathlib import Path
-        module_dir = Path(avatar_drake_sim.__file__).parent
-        
-        root = str(module_dir) + "/../.."
-                
         # full path to urdf
-        avatar_path = root + "/urdf/avatar_left_ff_only.urdf" #type:ignore
+        avatar_path = "./urdf/avatar_left_ff_only.urdf" #type:ignore
         
         self.avatar_model_instance = self.parser.AddModels(avatar_path)[0] #type:ignore
         
@@ -138,15 +125,8 @@ class Avatar(RandomizerMixin):
         # get the robot's idx
         robot_model_idx = self.avatar_model_instance
         
-        
-        # get the root directory so this code can be ran from anywhere
-        from pathlib import Path
-        module_dir = Path(avatar_drake_sim.__file__).parent
-        
-        root = str(module_dir) + "/../.."
-                
         # full path to urdf
-        path = root + "/config/controller_gains.yaml" #type:ignore
+        path = "./config/controller_gains.yaml" #type:ignore
         
         
         # load the controller gain yaml using omegaconf
