@@ -509,7 +509,7 @@ def main():
     print(f"Number of parameters: {nb_elements}")
 
     # 4. Train the agent
-    total_timesteps = 500_000
+    total_timesteps = 200_000
     print(f"Starting training for {total_timesteps} steps...")
     model.learn(total_timesteps=total_timesteps, progress_bar=True, log_interval=24, callback=cb)
 

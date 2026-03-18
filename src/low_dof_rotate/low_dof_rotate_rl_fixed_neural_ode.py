@@ -280,7 +280,7 @@ class CriticNeuralODE(SACPolicy):
             optimizer.zero_grad()
             
             # cat the obs and action into the obs
-            obs = th.cat([observation, action_tensor], dim=1)
+            obs = th.cat([observation, action_tensor], dim=1).type(th.float32)
             
             # grads
             with th.no_grad():
@@ -650,7 +650,7 @@ def main():
         ),
     )
     
-    PROFILING = False
+    PROFILING = True
     if PROFILING:
         cb = InferenceTimeCallback()
     else:
@@ -662,7 +662,7 @@ def main():
     print(f"Number of parameters: {nb_elements}")
 
     # 4. Train the agent
-    total_timesteps = 500_000
+    total_timesteps = 200_000
     print(f"Starting training for {total_timesteps} steps...")
     model.learn(total_timesteps=total_timesteps, progress_bar=True, log_interval=24, callback=cb)
 
