@@ -10,17 +10,17 @@ A baseline algorithm was chosen to compare performance against. PPO was used bec
 
 PPO is an online algorithm that works by increasing the probability of "good" actions being taken, and decreases the probability of "bad" actions being taken. Good and bad are computed relative to an average which produces an "Advantage".
 
-PPO loss:
-$$
-L^{CLIP}(\theta) = \hat{\mathbb{E}}_t \left[ \min \left( r_t(\theta) \hat{A}_t, \text{clip}(r_t(\theta), 1 - \epsilon, 1 + \epsilon) \hat{A}_t \right) \right]
-$$
+PPO loss:  
+
+$$L^{CLIP}(\theta) = \hat{\mathbb{E}}_t \left[ \min \left( r_t(\theta) \hat{A}_t, \text{clip}(r_t(\theta), 1 - \epsilon, 1 + \epsilon) \hat{A}_t \right) \right]$$
 
 
 ### Actorless Actor Critic
 [paper ref]
 In standard Soft Actor-Critic, the Critic is trained to predict q-values using the Bellman Equation. The Actor is trained to maximize the expected q-value of its output. This happens by taking the Actor's output, feeding it through the Critic, then using back-propagation to calculate a gradient of the action, and then using that action gradient to update the Actor's weights. 
 
-The SAC Bellman Equation, with an exploration term ($\log \pi(a'|s')$)
+The SAC Bellman Equation, with an exploration term ( $\log \pi(a'|s')$ )
+
 $$
 Q(s, a) = r(s, a) + \gamma \mathbb{E}_{s' \sim P, a' \sim \pi} \left[ Q(s', a') - \alpha \log \pi(a'|s') \right]
 $$
@@ -35,6 +35,7 @@ For simplicity, I use scheduled epsilon-greedy for exploration, and set the expl
 A Neural ODE is a neural net which is trained to approximate an ordinary differential equation (or system thereof). The input is the dependent variable, and t, and the output is the gradient of the dependent variable. In our case, I cast the gradient of the Critic from Actorless Actor-Critic as an ODE and train a neural net to predict the gradient of the Critic. This neural ODE is then used during inference to predict action gradients, and once again Torch's L-BFGS solves the optimization problem using those action gradients.
 
 My Neural ODE loss function:
+
 $$
 L = \text{MSE} \left( \pi(s, a), \frac{\partial Q(s, a)}{\partial a} \right)
 $$
