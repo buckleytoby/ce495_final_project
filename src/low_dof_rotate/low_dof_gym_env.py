@@ -230,8 +230,8 @@ def LowDOFRotateGymEnv():
         
         return env
         
-    if True:
-        env = make_vec_env(make_drake_env, n_envs=24, vec_env_cls=SubprocVecEnv)
+    if False:
+        env = make_vec_env(make_drake_env, n_envs=2, vec_env_cls=SubprocVecEnv)
     else:
         env = make_vec_env(make_drake_env, n_envs=1, vec_env_cls=DummyVecEnv)
     
