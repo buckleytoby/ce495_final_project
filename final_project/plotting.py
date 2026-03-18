@@ -88,12 +88,50 @@ plt.grid()
 # save it
 plt.savefig(os.path.join(plots_path, "neural_ode_actor_loss_plot.png"))
 
+# sac.csv
+sac = pd.read_csv(os.path.join(data_path, "sac.csv"), sep="\t")
 
-# plot all rewards together for comparison
+# plot
+plt.figure(figsize=(10, 6))
+plt.plot(sac["Step"], sac["Value"], label="SAC", color="cyan")
+plt.xlabel("Step")
+plt.ylabel("Reward")
+plt.title("SAC Reward over Time")
+plt.legend()
+plt.grid()
+
+# save it
+plt.savefig(os.path.join(plots_path, "sac_reward_plot.png"))
+
+# trpo.csv
+trpo = pd.read_csv(os.path.join(data_path, "trpo.csv"), sep="\t")
+
+# plot
+plt.figure(figsize=(10, 6))
+plt.plot(trpo["Step"], trpo["Value"], label="TRPO", color="magenta")
+plt.xlabel("Step")
+plt.ylabel("Reward")
+plt.title("TRPO Reward over Time")
+plt.legend()
+plt.grid()
+
+# save it
+plt.savefig(os.path.join(plots_path, "trpo_reward_plot.png"))
+
+
+# plot all rewards together for comparison, only plot <100k
+good_ppo = good_ppo[good_ppo["Step"] < 100000]
+decent_lbfgs = decent_lbfgs[decent_lbfgs["Step"] < 100000]
+neural_ode = neural_ode[neural_ode["Step"] < 100000]
+sac = sac[sac["Step"] < 100000]
+trpo = trpo[trpo["Step"] < 100000]
+
 plt.figure(figsize=(10, 6))
 plt.plot(good_ppo["Step"], good_ppo["Value"], label="PPO", color="blue")
-plt.plot(decent_lbfgs["Step"], decent_lbfgs["Value"], label="Critic LBFGS", color="orange")
-plt.plot(neural_ode["Step"], neural_ode["Value"], label="Neural ODE LBFGS", color="green")
+plt.plot(trpo["Step"], trpo["Value"], label="TRPO", color="magenta")
+plt.plot(sac["Step"], sac["Value"], label="SAC", color="cyan")
+plt.plot(decent_lbfgs["Step"], decent_lbfgs["Value"], label="SAC Critic LBFGS", color="orange")
+plt.plot(neural_ode["Step"], neural_ode["Value"], label="SAC Neural ODE LBFGS", color="green")
 plt.xlabel("Step")
 plt.ylabel("Reward")
 plt.title("Reward Comparison over Time")
