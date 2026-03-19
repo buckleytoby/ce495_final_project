@@ -14,6 +14,13 @@ PPO loss:
 
 $$L^{CLIP}(\theta) = \hat{\mathbb{E}}_t \left[ \min \left( r_t(\theta) \hat{A}_t, \text{clip}(r_t(\theta), 1 - \epsilon, 1 + \epsilon) \hat{A}_t \right) \right]$$
 
+### Gradient PPO
+This algorithm uses PPO to predict a gradient of an action, and then uses LBFGS duringi inference to optimize a randomly initialized action. The PPO algorithm is unchanged, but instead exists in gradient space. The inputs are the observation and the current action, and the output is the gradient of the current action. An auxiliary task-critic was trained to predict q-values from the observation and current action, and those q-values were used to generate rewards for the Gradient PPO algorithm.
+
+The task-critic was trained identically to SAC's critic.
+
+This is similar to PPO applied to Diffusion, or PPO applied to Flow matching. 
+
 
 ### Actorless Actor Critic
 [paper ref]
@@ -46,17 +53,35 @@ The advantage of a Neural ODE over doing backprop on the Critic is that inferenc
 
 Similar to SAC, the Neural ODE Actor and the Critic were trained simultaneously.
 
+## Optimization Algorithms
+### LBFGS
+LBFGS is a quasi-Newton Method which approximates the Hessian using previous gradient values.
+
+$$\theta_{k+1} = \theta_k - \alpha_k H_k \nabla f(\theta_k)$$
+
+where
+
+$$H_{k+1} = (I - \rho_k s_k y_k^T) H_k (I - \rho_k y_k s_k^T) + \rho_k s_k s_k^T$$
+
+This computes an approximation of the Hessian over time.
+
+
+### SGD
+This is the update equation used in Stochastic Gradient Descent:
+
+$$\theta_{t+1} = \theta_t - \eta \cdot \nabla J(\theta_t; x^{(i)}, y^{(i)})$$
+
+SGD tends to take more steps to converge than LBFGS, but uses less memory.
+
 ## Training Setup
 The network parameters were chosen so that all policies were roughly the same size, for a fair comparison. The learning rate was set to $3e-4$ for all algorithms.
 
 ## Relevance to CE495: Scientific Machine Learning
-Two topics covered in CE495 were explored in this project. The first was numerical optimization techniques, in my use of L-BFGS, and the second was the use of Neural ODE's to approximate an ODE.
+Two topics covered in CE495 were explored in this project. The first was numerical optimization techniques, in my use of L-BFGS and SGD, and the second was the use of Neural ODE's to approximate an ODE.
 
 My hypothesis for this project was that there would be a tradeoff between inference time, and performance. I predicted that if a network takes more time to "think" about its action, then it will produce better actions.
 
-The results, which are reviewed here: [youtube video link]
-
-show that with this project's setup, [talk about SAC vs Neural SAC vs Actorless SAC]
+The punchline from the results, which can be viewed here: [youtube link] is that PPO greatly outperforms SAC, and that LBFGS outperforms non-LBFGS methods.
 
 Furthermore, there was not a significant speedup in using a Neural ODE during inference, and the performance dropped significantly with the Neural ODE. This is likely because the Neural ODE Actor wasn't trained long enough on the Critic's gradients to be able to accurately approximate it.
 
@@ -92,7 +117,19 @@ python low_dof_rotate_sac.py
 ```
 
 ```
+python low_dof_rotate_trpo.py
+```
+
+```
+python low_dof_rotate_ppo_lbfgs2.py
+```
+
+```
 python low_dof_rotate_rl_simple_actorless_critic_lbfgs.py
+```
+
+```
+python low_dof_rotate_rl_simple_actorless_critic_sgd.py
 ```
 
 ```
@@ -130,6 +167,9 @@ to view tensorboard
 ## Parallel Envs
 There is an option to run many parallel environments to expedite training.
 
+
 Navigate to the file `low_dof_gym_env.py`. In line 233, change `False` to `True` to enable parallel envs in sub-processes. Change the `n_envs` parameter to a value of your liking (no more than the number of cores in your CPU, though).
 
 Now re-run any of the learning scripts from above.
+
+Note: this won't work with `low_dof_rotate_ppo_lbfgs2.py`.
