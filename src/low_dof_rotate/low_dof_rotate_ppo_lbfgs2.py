@@ -167,8 +167,9 @@ class InferenceTimeCallback(BaseCallback):
         
         # Measure only the prediction/inference part
         start_time = time.perf_counter()
-        with th.no_grad():
-            self.model.policy.predict(obs, deterministic=True)
+        self.model.ppo.train_mode = False #type:ignore
+        self.model.predict(obs, deterministic=True)
+        self.model.ppo.train_mode = True #type:ignore
         end_time = time.perf_counter()
         
         inf_time_ms = (end_time - start_time) * 1000
@@ -416,6 +417,8 @@ class KSpacePPOAlgorithm(PPO):
         self.k_space_ppo_warmup = 100
         # self.callback = None
         
+        self.train_mode = True
+        
     def learn_setup(
         self: SelfKSpacePPOAlgorithm,
         total_timesteps: int,
@@ -480,7 +483,8 @@ class KSpacePPOAlgorithm(PPO):
             assert self.ep_info_buffer is not None
             self.dump_logs(self.iteration)
 
-        self.train()
+        if self.train_mode:
+            self.train()
         return self
         
     
@@ -493,6 +497,11 @@ def main():
     # wrap with Monitor to log episode rewards and lengths
     log_dir = "./puck_logs/"
     env = VecMonitor(env)
+    
+    nb_env = env.num_envs
+    
+    if nb_env > 1:
+        raise NotImplementedError(">1 env not yet supported for this algorithm.")
     
 
     # 3. Initialize the PPO Agent
@@ -518,9 +527,10 @@ def main():
     
     # print the nb of parameters
     nb_elements = sum(p.numel() for p in model.policy.parameters())
-    print(f"Number of parameters: {nb_elements}")
+    nb_elements2 = sum(p.numel() for p in model.ppo.policy.parameters())
+    print(f"Number of parameters: {nb_elements+nb_elements2}")
     
-    cb = None if True else InferenceTimeCallback()
+    cb = None if True else InferenceTimeCallback() # slows down training
     model.learn(total_timesteps=100_000, progress_bar=True, log_interval=1, callback=cb, tb_log_name="TCriticAlgorithm")
 
 if __name__ == "__main__":

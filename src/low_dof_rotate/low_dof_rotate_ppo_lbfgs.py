@@ -439,6 +439,8 @@ class GradientPPOAlgorithm(PPO):
 
     
 def main():
+    raise NotImplementedError("This file is a work in progress and not yet runnable.")
+
     # 1. Create the environment
     # DrakeGymEnv usually handles the observation and action spaces based on 
     # the input/output ports you defined in your Diagram.
