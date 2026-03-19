@@ -349,7 +349,7 @@ class KSpaceEnv(gym.Env):
             loss.backward()
             
             # Clip gradients to prevent huge updates
-            th.nn.utils.clip_grad_norm_([action_gradient], max_norm=10.0)
+            th.nn.utils.clip_grad_norm_([self.t_action], max_norm=100.0)
                 
             return loss.item()
         
@@ -358,9 +358,12 @@ class KSpaceEnv(gym.Env):
         # nan protection
         with th.no_grad():
             # Keep it within a reasonable range for the neural network
-            self.t_action.clamp_(-10.0, 10.0) 
+            self.t_action.clamp_(-100.0, 100.0) 
             # Then catch any rogue NaNs just in case
+            
+            nb_nans = th.sum(th.isnan(self.t_action)).item()
             self.t_action.nan_to_num_(nan=0.0)
+
             
     def step(
         self, action
