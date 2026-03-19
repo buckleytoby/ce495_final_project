@@ -118,19 +118,34 @@ plt.grid()
 # save it
 plt.savefig(os.path.join(plots_path, "trpo_reward_plot.png"))
 
+# sgd
+sgd = pd.read_csv(os.path.join(data_path, "sgd.csv"), sep="\t")
+
+
+# gradient ppo
+gradient_ppo = pd.read_csv(os.path.join(data_path, "gradient_ppo.csv"), sep="\t")
+
+
+nb = 100_000
+# nb = 20000
 
 # plot all rewards together for comparison, only plot <100k
-good_ppo = good_ppo[good_ppo["Step"] < 100000]
-decent_lbfgs = decent_lbfgs[decent_lbfgs["Step"] < 100000]
-neural_ode = neural_ode[neural_ode["Step"] < 100000]
-sac = sac[sac["Step"] < 100000]
-trpo = trpo[trpo["Step"] < 100000]
+good_ppo = good_ppo[good_ppo["Step"] < nb]
+decent_lbfgs = decent_lbfgs[decent_lbfgs["Step"] < nb]
+neural_ode = neural_ode[neural_ode["Step"] < nb]
+sac = sac[sac["Step"] < nb]
+trpo = trpo[trpo["Step"] < nb]
+sgd = sgd[sgd["Step"] < nb]
+gradient_ppo = gradient_ppo[gradient_ppo["Step"] < nb]
+
 
 plt.figure(figsize=(10, 6))
 plt.plot(good_ppo["Step"], good_ppo["Value"], label="PPO", color="blue")
+plt.plot(gradient_ppo["Step"], gradient_ppo["Value"], label="Gradient PPO LBFGS", color="purple")
 plt.plot(trpo["Step"], trpo["Value"], label="TRPO", color="magenta")
 plt.plot(sac["Step"], sac["Value"], label="SAC", color="cyan")
 plt.plot(decent_lbfgs["Step"], decent_lbfgs["Value"], label="SAC Critic LBFGS", color="orange")
+plt.plot(sgd["Step"], sgd["Value"], label="SAC Critic SGD", color="red")
 plt.plot(neural_ode["Step"], neural_ode["Value"], label="SAC Neural ODE LBFGS", color="green")
 plt.xlabel("Step")
 plt.ylabel("Reward")
